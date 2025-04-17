@@ -28,6 +28,11 @@ The goal is to reproduce the layout, structure, and content of the original PDFs
 📽️ You can view my complete project explanation and walkthrough here:  
 👉 [Watch the Video on Google Drive](https://drive.google.com/file/d/1NFUXCHkT1Iw3vc78pJ_TQUPIxZed8_GQ/view?usp=drive_link)
 
+## 🌍 Live Demo
+
+🔗 [View Project on Netlify](https://dynamicmultipagepdf.netlify.app/)
+
+
 ## 📬 Contact
 
 - 🔗 [LinkedIn](https://www.linkedin.com/in/abhishek-kumar-92157823a/)  
