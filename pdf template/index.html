@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dynamic PDF-like Multi-Page Forms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f7f7f7;
+      }
+      .container {
+        width: 95%;
+        max-width: 900px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .page {
+        margin-bottom: 30px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        position: relative;
+      }
+      .header,
+      .footer {
+        text-align: center;
+        padding: 5px 0;
+        border-bottom: 1px solid #ddd;
+      }
+      .footer {
+        border-top: 1px solid #ddd;
+        border-bottom: none;
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        right: 0;
+      }
+      .footer p {
+        margin: 2px 0;
+      }
+      .footer span {
+        font-weight: bold;
+      }
+      .content {
+        margin: 20px 0 120px;
+      }
+      .logo {
+        height: 50px;
+        vertical-align: middle;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      .section-title {
+        background: #eee;
+        padding: 5px;
+        margin: 20px 0 5px;
+        font-weight: bold;
+      }
+      .nav-buttons {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .nav-buttons button {
+        margin: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      @media print {
+        .nav-buttons,
+        button {
+          display: none;
+        }
+        .page {
+          page-break-after: always;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav-buttons">
+      <button onclick="showExercise('expense')">
+        Medical &amp; Travel Expense Request
+      </button>
+      <button onclick="showExercise('progress')">Worker Progress Report</button>
+    </div>
+
+    <!-- Exercise 1: Medical & Travel Expense Request -->
+    <div id="expense" class="container">
+      <!-- Page 1 -->
+      <div class="page">
+        <div class="header">
+          <img src="logo.png" alt="Logo" class="logo" />
+          <h2>Medical &amp; Travel Expense Request</h2>
+          <p>333 Broadway, Winnipeg, MB R3C 4W3</p>
+          <p>Phone: (204) 954-4321 | Toll Free: 1-855-954-4321 | wcb.mb.ca</p>
+        </div>
+        <div class="content">
+          <p><strong>Requester:</strong> Madeleine Willson</p>
+          <div class="section-title">Prescription Drugs</div>
+          <table id="prescriptionTable">
+            <thead>
+              <tr>
+                <th>Drug Name</th>
+                <th>Date Purchased</th>
+                <th>Prescription Date</th>
+                <th>Healthcare Provider Name</th>
+                <th>Paid Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Naproxen</td>
+                <td>February 28, 2024</td>
+                <td>February 29, 2024</td>
+                <td>Dr. Best</td>
+                <td>$20.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="section-title">Over-the-Counter Drugs</div>
+          <table id="otcTable">
+            <thead>
+              <tr>
+                <th>Drug Name</th>
+                <th>Date Purchased</th>
+                <th>Paid Amount</th>
+                <th>Seller's Name</th>
+                <th>Reason for Purchasing</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Advil</td>
+                <td>March 28, 2024</td>
+                <td>$8.00</td>
+                <td>Shoppers Drug Mart</td>
+                <td>Pain</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="section-title">
+            Bandages, Braces or Other Medical Supplies
+          </div>
+          <table id="suppliesTable">
+            <thead>
+              <tr>
+                <th>Item Purchased</th>
+                <th>Date Purchased</th>
+                <th>Was this Prescribed?</th>
+                <th>Healthcare Provider Name</th>
+                <th>Paid Amount</th>
+                <th>Seller's Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tensor Bandage</td>
+                <td>February 28, 2024</td>
+                <td>Yes</td>
+                <td>Dr. Best</td>
+                <td>$10.00</td>
+                <td>Shoppers Drug Mart</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="footer">
+          <p>Worker App ID: 712041 | Submitted: March 28, 2024 20:43</p>
+          <p>Page <span>1</span> of 2</p>
+        </div>
+      </div>
+      <!-- Page 2 -->
+      <div class="page">
+        <div class="header">
+          <img src="logo.png" alt="Logo" class="logo" />
+          <h2>Medical &amp; Travel Expense Request</h2>
+        </div>
+        <div class="content">
+          <div class="section-title">Parking for Medical Appointments</div>
+          <table id="parkingTable">
+            <thead>
+              <tr>
+                <th>Address of Healthcare Provider/Medical Facility</th>
+                <th>Date Paid</th>
+                <th>Paid Amount</th>
+                <th>Meter Used?</th>
+                <th>Meter Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>333 St Mary Ave, Winnipeg MB R3C 4A5, Canada</td>
+                <td>March 28, 2024</td>
+                <td>$10.00</td>
+                <td>Yes</td>
+                <td>12245</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="section-title">Mileage to Medical Appointments</div>
+          <table id="mileageTable">
+            <thead>
+              <tr>
+                <th>Appointment Date</th>
+                <th>Address of Healthcare Provider/Medical Facility</th>
+                <th>Address of Workplace</th>
+                <th>Round-Trip km</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>March 28, 2024</td>
+                <td>HSC, 820 Sherbrook St, Winnipeg MB R3A 1R9, Canada</td>
+                <td>WCB, 333 Broadway, Winnipeg MB R3C 4W3, Canada</td>
+                <td>20 km</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="section-title">
+            Bus or Taxi Fare for Medical Appointments
+          </div>
+          <table id="busTaxiTable">
+            <thead>
+              <tr>
+                <th>Appointment Date</th>
+                <th>Address of Starting Point</th>
+                <th>Address of Healthcare Provider/Medical Facility</th>
+                <th>Bus or Taxi (indicate one)</th>
+                <th>Total Fare Paid</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>March 28, 2024</td>
+                <td>
+                  HSC Winnipeg Women’s Hospital, 665 William Ave, Winnipeg MB
+                  R3E 0Z2, Canada
+                </td>
+                <td>
+                  HSC Winnipeg Women’s Hospital, 665 William Ave, Winnipeg MB
+                  R3E 0Z2, Canada
+                </td>
+                <td>Bus</td>
+                <td>$3.00</td>
+              </tr>
+              <tr>
+                <td>March 27, 2024</td>
+                <td>25 Furby St, Winnipeg MB R3C 2A2, Canada</td>
+                <td>440 Edmonton St, Winnipeg MB R3B 2M4, Canada</td>
+                <td>Taxi</td>
+                <td>$15.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="section-title">Declaration</div>
+          <p>
+            <label
+              ><input
+                type="checkbox"
+                style="transform: scale(1.2); margin-right: 8px"
+              />I understand that the Privacy Notice applies to the personal
+              information collected in this document.</label
+            >
+          </p>
+        </div>
+        <div class="footer">
+          <p>Worker App ID: 712041 | Submitted: March 28, 2024 20:43</p>
+          <p>Page <span>2</span> of 2</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2: Worker Progress Report -->
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Dynamic PDF-like Multi-Page Forms</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+          }
+          .container {
+            width: 95%;
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+          .page {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            position: relative;
+          }
+          .header,
+          .footer {
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+          }
+          .footer {
+            border-top: 1px solid #ddd;
+            border-bottom: none;
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+          }
+          .footer p {
+            margin: 2px 0;
+          }
+          .footer span {
+            font-weight: bold;
+          }
+          .content {
+            margin: 20px 0 120px;
+          }
+          .logo {
+            height: 50px;
+            vertical-align: middle;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+          }
+          th,
+          td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+          }
+          .section-title {
+            background: #eee;
+            padding: 5px;
+            margin: 20px 0 5px;
+            font-weight: bold;
+          }
+          .nav-buttons {
+            text-align: center;
+            margin: 20px 0;
+          }
+          .nav-buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+          }
+          @media print {
+            .nav-buttons,
+            button {
+              display: none;
+            }
+            .page {
+              page-break-after: always;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <!-- Medical & Travel Expense Request (unchanged) -->
+
+        <!-- Worker Progress Report -->
+        <div id="progress" class="container" style="display: none">
+          <!-- Page 1 -->
+          <div class="page">
+            <div class="header">
+              <img src="logo.png" alt="Logo" class="logo" />
+              <h2>Worker Progress Report</h2>
+              <p>333 Broadway, Winnipeg, MB R3C 4W3</p>
+              <p>
+                Phone: (204) 954-4321 | Toll Free: 1-855-954-4321 | wcb.mb.ca
+              </p>
+            </div>
+            <div class="content">
+              <p><strong>Submitted:</strong> March 19, 2024 19:21</p>
+              <p><strong>Worker App ID:</strong> 712041</p>
+              <div class="section-title">Return to Work Status</div>
+              <p>Select one:</p>
+              <p>
+                <label
+                  ><input type="checkbox" /> I have not returned to work</label
+                >
+                <label style="margin-left: 20px"
+                  ><input type="checkbox" /> I returned to work on:
+                  <input type="text" placeholder="Date"
+                /></label>
+              </p>
+              <table id="dutyTable">
+                <thead>
+                  <tr>
+                    <th>Full duties, regular hours</th>
+                    <th>Full duties, reduced hours</th>
+                    <th>Modified duties, regular hours</th>
+                    <th>Modified duties, reduced hours</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" /></td>
+                    <td><input type="checkbox" /></td>
+                    <td><input type="checkbox" /></td>
+                    <td><input type="checkbox" /></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                <strong>I expect to return to work on:</strong>
+                <input type="text" placeholder="Date" />
+              </p>
+              <p>
+                <strong
+                  >I have the following concerns about returning to
+                  work:</strong
+                >
+              </p>
+              <textarea rows="3" style="width: 100%"></textarea>
+              <p style="margin-top: 10px">
+                <strong>Employer Contact:</strong>
+                <input
+                  type="text"
+                  placeholder="Name & Date"
+                  style="width: 60%"
+                />
+              </p>
+            </div>
+            <div class="footer">
+              <p>Worker App ID: 712041 | Submitted: March 19, 2024 19:21</p>
+              <p>Page <span>1</span> of 3</p>
+            </div>
+          </div>
+          <!-- Page 2 -->
+          <div class="page">
+            <div class="header">
+              <img src="logo.png" alt="Logo" class="logo" />
+              <h2>Worker Progress Report</h2>
+            </div>
+            <div class="content">
+              <div class="section-title">Recovery &amp; Progress Updates</div>
+              <p>
+                <strong>Date of Report:</strong>
+                <span id="reportDate">March 15, 2024</span>
+              </p>
+              <p>
+                <strong>Progress Update:</strong>
+                <span id="progressUpdate"
+                  >My return to work is going: Terrible. Testing Testing</span
+                >
+              </p>
+              <table id="recoveryTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Update</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>March 14, 2024</td>
+                    <td>Initial appointment completed.</td>
+                  </tr>
+                  <tr>
+                    <td>March 15, 2024</td>
+                    <td>Follow-up discussion on recovery progress.</td>
+                  </tr>
+                  <tr>
+                    <td>March 16, 2024</td>
+                    <td>Further tests scheduled.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="footer">
+              <p>Worker App ID: 712041 | Submitted: March 19, 2024 19:21</p>
+              <p>Page <span>2</span> of 3</p>
+            </div>
+          </div>
+          <!-- Page 3 -->
+          <div class="page">
+            <div class="header">
+              <img src="logo.png" alt="Logo" class="logo" />
+              <h2>Worker Progress Report</h2>
+            </div>
+            <div class="content">
+              <div class="section-title">Current Pain Level</div>
+              <p>
+                Select one (1–10):
+                <span>
+                  <label><input type="radio" name="pain" />1</label>
+                  <label><input type="radio" name="pain" />2</label>
+                  <label><input type="radio" name="pain" />3</label>
+                  <label><input type="radio" name="pain" />4</label>
+                  <label><input type="radio" name="pain" />5</label>
+                  <label><input type="radio" name="pain" />6</label>
+                  <label><input type="radio" name="pain" />7</label>
+                  <label><input type="radio" name="pain" />8</label>
+                  <label><input type="radio" name="pain" />9</label>
+                  <label><input type="radio" name="pain" />10</label>
+                </span>
+              </p>
+              <div class="section-title">Medical Treatment</div>
+              <p>Select one:</p>
+              <p>
+                <label
+                  ><input type="checkbox" /> I am not continuing to receive
+                  medical treatment</label
+                >
+              </p>
+              <p>
+                <label
+                  ><input type="checkbox" /> I am continuing to receive medical
+                  treatment from:
+                  <input type="text" placeholder="Provider Type"
+                /></label>
+              </p>
+              <p>
+                <strong>My last medical treatment was:</strong>
+                <input type="text" placeholder="Date (Provider Name)" />
+              </p>
+              <p>
+                <label
+                  ><input type="checkbox" /> I am attending a Chiropractor or
+                  Physiotherapist: <input type="text" placeholder="Frequency"
+                /></label>
+              </p>
+              <div class="section-title">Home Exercises</div>
+              <p>
+                <label
+                  ><input type="checkbox" /> I am not doing home
+                  exercises</label
+                >
+              </p>
+              <p>
+                <label
+                  ><input type="checkbox" /> I am doing home exercises:
+                  <textarea rows="2" style="width: 100%"></textarea>
+                </label>
+              </p>
+              <div class="section-title">Other Information</div>
+              <textarea
+                rows="3"
+                style="width: 100%"
+                placeholder="Additional comments..."
+              ></textarea>
+              <div class="section-title">Declaration</div>
+              <p>
+                <label
+                  ><input
+                    type="checkbox"
+                    style="transform: scale(1.2); margin-right: 8px"
+                  />
+                  I certify that the information given on this form is true,
+                  correct and complete to the best of my knowledge. I agree to
+                  notify the Workers Compensation Board of Manitoba (WCB)
+                  immediately once I return to any form of work and/or
+                  employment.</label
+                >
+              </p>
+              <p>
+                <label
+                  ><input
+                    type="checkbox"
+                    style="transform: scale(1.2); margin-right: 8px"
+                  />
+                  I understand that it is an offence to knowingly make a false
+                  statement to the WCB. I also understand that it is an offence
+                  to withhold information from WCB which affects my entitlement
+                  to compensation (e.g., full or partial recovery from injury,
+                  ability to return to work, sources of additional income,
+                  etc.).</label
+                >
+              </p>
+              <p>
+                <label
+                  ><input
+                    type="checkbox"
+                    style="transform: scale(1.2); margin-right: 8px"
+                  />
+                  I understand that refusing to co-operate with, or follow my
+                  treatment, may result in the WCB reducing or suspending my
+                  benefits.</label
+                >
+              </p>
+              <p>
+                <label
+                  ><input
+                    type="checkbox"
+                    style="transform: scale(1.2); margin-right: 8px"
+                  />
+                  I understand that the Privacy Notice applies to the personal
+                  information collected in this document.</label
+                >
+              </p>
+            </div>
+            <div class="footer">
+              <p>Worker App ID: 712041 | Submitted: March 19, 2024 19:21</p>
+              <p>Page <span>3</span> of 3</p>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          function showExercise(exercise) {
+            document.getElementById("expense").style.display =
+              exercise === "expense" ? "block" : "none";
+            document.getElementById("progress").style.display =
+              exercise === "progress" ? "block" : "none";
+          }
+          window.onload = function () {
+            showExercise("expense");
+          };
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
